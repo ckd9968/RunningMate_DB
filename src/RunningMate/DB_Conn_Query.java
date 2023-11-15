@@ -32,3 +32,5 @@ DB_Conn_Query dbconquery = new DB_Conn_Query();
 dbconquery.sqlRun();
 }
 }
+
+// 추가
