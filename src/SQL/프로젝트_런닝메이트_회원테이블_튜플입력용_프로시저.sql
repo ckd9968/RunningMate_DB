@@ -34,7 +34,7 @@ begin
     UTL_FILE.GET_LINE(addr_stream, addr_buf, 1024);
     UTL_FILE.GET_LINE(job_stream, job_buf, 1024);
     
-    while LENGTH(name_buf) > 0 loop
+    loop
         addr_buf := replace(addr_buf, chr(13) || chr(10), '');
         name_buf := replace(name_buf, chr(13) || chr(10), '');
         job_buf := replace(job_buf, chr(13) || chr(10), '');
