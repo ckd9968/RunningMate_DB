@@ -36,7 +36,7 @@ public class MainForm extends JFrame {
 		setResizable(false);
 		setTitle("런닝 메이트");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 500);
+		setBounds(100, 100, 450, 571);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -97,5 +97,16 @@ public class MainForm extends JFrame {
 		});
 		btnNewButton_4.setBounds(10, 362, 418, 78);
 		contentPane.add(btnNewButton_4);
+		
+		JButton btnNewButton_5 = new JButton("장비");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			// 장비 검색 버튼 클릭시 창 전환
+			public void actionPerformed(ActionEvent e) {
+				new EquipmentForm();
+				setVisible(true);
+			}
+		});
+		btnNewButton_5.setBounds(10, 450, 418, 78);
+		contentPane.add(btnNewButton_5);
 	}
 }
