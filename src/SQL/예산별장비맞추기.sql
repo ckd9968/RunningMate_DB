@@ -1,7 +1,6 @@
 set serveroutput on;
 
-create or replace procedure SP_예산에맞추기(budget in number, category1 in char, category2 in char, category3 in char, 장비목록 out varchar2) as
-    
+create or replace procedure SP_예산에맞추기(budget in number, category1 in varchar2, category2 in varchar2, category3 in varchar2, 장비목록 out varchar2) as
     cursor shoes is select * from 장비 where 장비종류 = '운동화' order by 가격 DESC;
     cursor gloves is select * from 장비 where 장비종류 = '장갑' order by 가격 ASC;
     cursor head_phones is select * from 장비 where 장비종류 = '헤드폰' order by 가격 ASC;
@@ -129,7 +128,9 @@ begin
                 lefts(1) := lefts(1) - 1;
             end loop;
             
-            dbms_output.put_line('price = ' || pr_2_eq(lefts(1)).가격);
+            if lefts(1) >= 1 and lefts(1) <= pr_2_eq.last then
+                dbms_output.put_line('price = ' || pr_2_eq(lefts(1)).가격);
+            end if;
             
             if lefts(1) < 1 then
                 lefts(1) := -1;
@@ -159,7 +160,9 @@ begin
                     lefts(2) := lefts(2) - 1;
                 end loop;
                 
-                dbms_output.put_line('left(2) = ' || lefts(2) || ', price = ' || pr_3_eq(lefts(2)).가격);
+                if lefts(2) <= pr_3_eq.last and lefts(2) >= 1 then
+                    dbms_output.put_line('lefts(2) = ' || lefts(2) || ', price = ' || pr_3_eq(lefts(2)).가격);
+                end if;
                 
                 if lefts(2) > 0 then
                     goto OUT_OF_COMB;
@@ -187,10 +190,11 @@ begin
 end;
 
 declare
-    output varchar2(400);
+    output varchar2(4000);
 begin
-    SP_예산에맞추기(1000, 'shoes', 'gloves', 'head_phones', output);
+    SP_예산에맞추기(78000, 'shoes', 'gloves', 'head_phones', output);
 end;
 
-
-select * from 장비;
+select * from (
+(select min(가격) from 장비 where 장비종류='운동화') UNION
+(select min(가격) from 장비 where 장비종류='장갑'));
