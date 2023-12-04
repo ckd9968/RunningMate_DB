@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class MainForm extends JFrame {
+public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
 
@@ -20,7 +20,7 @@ public class MainForm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainForm frame = new MainForm();
+					MainFrame frame = new MainFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -32,7 +32,7 @@ public class MainForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MainForm() {
+	public MainFrame() {
 		setResizable(false);
 		setTitle("런닝 메이트");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,7 +47,7 @@ public class MainForm extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			// 회원 검색 버튼 클릭 시 창 전환
 			public void actionPerformed(ActionEvent e) {
-				new SearchMemberForm();
+				new SearchMemberFrame();
 				setVisible(true);
 			}
 		});
@@ -58,7 +58,7 @@ public class MainForm extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			// 크루 검색 버튼 클릭 시 창 전환
 			public void actionPerformed(ActionEvent e) {
-				new SearchCrewForm();
+				new SearchCrewFrame();
 				setVisible(true);
 			}
 		});
@@ -80,7 +80,7 @@ public class MainForm extends JFrame {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			// 기록 버튼 클릭시 창 전환
 			public void actionPerformed(ActionEvent e) {
-				new RecordForm();
+				new RecordFrame();
 				setVisible(true);
 			}
 		});
@@ -91,7 +91,7 @@ public class MainForm extends JFrame {
 		btnNewButton_4.addActionListener(new ActionListener() {
 			// 추천 코스 버튼 클릭시 창 전환
 			public void actionPerformed(ActionEvent e) {
-				new RecommendCourseForm();
+				new RecommendCourseFrame();
 				setVisible(true);
 			}
 		});

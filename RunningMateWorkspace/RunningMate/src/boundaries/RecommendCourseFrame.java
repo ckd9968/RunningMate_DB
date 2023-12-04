@@ -11,7 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.JButton;
 
-public class RecommendCourseForm extends JFrame {
+public class RecommendCourseFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -23,7 +23,7 @@ public class RecommendCourseForm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RecommendCourseForm frame = new RecommendCourseForm();
+					RecommendCourseFrame frame = new RecommendCourseFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -35,7 +35,7 @@ public class RecommendCourseForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RecommendCourseForm() {
+	public RecommendCourseFrame() {
 		setAlwaysOnTop(true);
 		
 		setVisible(true);

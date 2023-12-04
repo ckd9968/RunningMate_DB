@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
-public class SearchMemberForm extends JFrame {
+public class SearchMemberFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -28,7 +28,7 @@ public class SearchMemberForm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SearchMemberForm frame = new SearchMemberForm();
+					SearchMemberFrame frame = new SearchMemberFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,7 +40,7 @@ public class SearchMemberForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SearchMemberForm() {
+	public SearchMemberFrame() {
 		setAlwaysOnTop(true);
 		
 		setVisible(true);

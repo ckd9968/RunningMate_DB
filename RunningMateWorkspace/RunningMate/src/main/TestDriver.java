@@ -1,6 +1,6 @@
 package main;
 
-import boundaries.MainForm;
+import boundaries.MainFrame;
 
 
 public class TestDriver {
