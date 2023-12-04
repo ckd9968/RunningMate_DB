@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DB_Connector {
 	static Connection con;
 	static final String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	static final String id = "rmadmin";
+	static final String id = "rm";
 	static final String pass = "rm123";
 	
 	static {
@@ -19,15 +19,26 @@ public class DB_Connector {
 		}
 	}
 	
-	public static void connectToDB() throws SQLException{
-		con = DriverManager.getConnection(url, id, pass);
+	public static void connectToDB(String message){
+		try {
+			con = DriverManager.getConnection(url, id, pass);
+			System.out.println("connected completely : " + message);
+		} catch(SQLException e) {
+			System.out.println(e.getMessage() + " " + message);
+			e.printStackTrace();
+		}
 	}
 	
 	public static Connection getConnection() {
 		return DB_Connector.con;
 	}
 	
-	public static void closeConnection() throws SQLException{
-		con.close();
+	public static void closeConnection() {
+		try {
+			con.close();
+		} catch(SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 }

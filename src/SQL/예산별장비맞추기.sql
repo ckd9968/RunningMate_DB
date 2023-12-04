@@ -1,6 +1,6 @@
 set serveroutput on;
 
-create or replace procedure SP_예산에맞추기(budget in number, category1 in varchar2, category2 in varchar2, category3 in varchar2, 장비목록 out varchar2) as
+create or replace procedure SP_예산에맞추기(budget in number, category1 in varchar2, category2 in varchar2, category3 in varchar2, 장비목록 out SYS_REFCURSOR) as
     cursor shoes is select * from 장비 where 장비종류 = '운동화' order by 가격 DESC;
     cursor gloves is select * from 장비 where 장비종류 = '장갑' order by 가격 ASC;
     cursor head_phones is select * from 장비 where 장비종류 = '헤드폰' order by 가격 ASC;
@@ -176,17 +176,12 @@ begin
     raise NO_MATCH_COMB_EXCEPTION;
     
     <<OUT_OF_COMB>> -- 다 맞으면 이곳으로 jUMP
-    장비목록 := pr_1_eq(v_pr_1_idx).장비ID || '/' || pr_1_eq(v_pr_1_idx).회원ID || '/' || pr_1_eq(v_pr_1_idx).장비종류 ||'/' ||  pr_1_eq(v_pr_1_idx).브랜드 || '/' || pr_1_eq(v_pr_1_idx).제품명 || '/' || pr_1_eq(v_pr_1_idx).가격 || '&';
-    장비목록 := 장비목록 || pr_2_eq(lefts(1)).장비ID || '/' || pr_2_eq(lefts(1)).회원ID || '/' || pr_2_eq(lefts(1)).장비종류 || '/' || pr_2_eq(lefts(1)).브랜드 || '/' || pr_2_eq(lefts(1)).제품명 || '/' || pr_2_eq(lefts(1)).가격 || '&';
-    장비목록 := 장비목록 || pr_3_eq(lefts(2)).장비ID || '/' || pr_3_eq(lefts(2)).회원ID || '/' || pr_3_eq(lefts(2)).장비종류 || '/' || pr_3_eq(lefts(2)).브랜드 || '/' ||  pr_3_eq(lefts(2)).제품명 || '/' || pr_3_eq(lefts(2)).가격;
-    
-    
-    dbms_output.put_line(장비목록);
+    open 장비목록 for select * from 장비 where (장비ID, 회원ID) in ((pr_1_eq(v_pr_1_idx).장비ID, pr_1_eq(v_pr_1_idx).회원ID),(pr_2_eq(lefts(1)).장비ID, pr_2_eq(lefts(1)).회원ID),(pr_3_eq(lefts(2)).장비ID, pr_3_eq(lefts(2)).회원ID));
     
     exception
     when NO_MATCH_COMB_EXCEPTION then
         dbms_output.put_line('no match');
-        장비목록 := 'NO MATCH FOUND';
+        open 장비목록 for select 'no data' as "result" from dual;
 end;
 
 declare
@@ -196,5 +191,9 @@ begin
 end;
 
 select * from (
-(select min(가격) from 장비 where 장비종류='운동화') UNION
+(select min(가격) from 장비 where 장비종류='헤드폰') UNION
 (select min(가격) from 장비 where 장비종류='장갑'));
+select * from 장비 where 장비종류='헤드폰';
+select 'no data' as "result" from dual;
+
+commit;
