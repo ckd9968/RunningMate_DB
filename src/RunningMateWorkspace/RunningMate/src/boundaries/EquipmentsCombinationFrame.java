@@ -153,15 +153,22 @@ public class EquipmentsCombinationFrame extends JFrame {
 				}
 				
 				//t_model.addRow(demodata);
-				DefaultTableModel new_model = new DefaultTableModel(EquipmentsCombinationFrame.colnames, 0);
-				t_model = new_model;
 				ResultSet rs = controller.executeCombination(budget, priority1, priority2, priority3);
+				
+				DefaultTableModel new_model = new DefaultTableModel(EquipmentsCombinationFrame.colnames, 0);
+				
 				if(rs == null) {
 					JOptionPane.showMessageDialog(null, "결과집합이 전달되지 않았습니다.", "실행오류", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				try {
 					ResultSetMetaData schema = rs.getMetaData();
+					if(schema.getColumnCount() == 1) {
+						JOptionPane.showMessageDialog(null, "가능한 조합이 없습니다.", "입력오류", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+					t_model = new_model;
+					
 					while(rs.next()) {
 						String[] newRow = new String[schema.getColumnCount()];
 						for(int i = 1; i <= schema.getColumnCount(); i++) {
