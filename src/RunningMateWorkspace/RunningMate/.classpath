@@ -7,5 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="D:/2023년 3학년 2학기/데이터베이스 프로그래밍/RunningMate_DB/RunningMate_DB/src/RunningMateWorkspace/JDBC드라이버/ojdbc8.jar"/>
+	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
