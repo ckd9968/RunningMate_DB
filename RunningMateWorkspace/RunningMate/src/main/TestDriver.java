@@ -1,14 +1,14 @@
 package main;
 
-import boundaries.EquipmentsCombinationFrame;
-import controllers.EquipmentsCombinationController;
+import boundaries.RecordFrame;
+import controllers.RecordingController;
 
 
 public class TestDriver {
 
 	public static void main(String[] args) {
-		new EquipmentsCombinationFrame(new EquipmentsCombinationController());
-
+		new RecordFrame(new RecordingController());
+		
 	}
 
 }

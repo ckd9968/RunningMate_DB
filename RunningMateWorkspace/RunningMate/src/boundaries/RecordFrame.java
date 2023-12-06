@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
@@ -17,11 +19,14 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import controllers.RecordingController;
 
 public class RecordFrame extends JFrame implements ActionListener{
-
+	private String myID = "MEM00001";
+	
 	private JPanel contentPane;
 	private JTextField distanceTextField;
 	private JTextField courseTextField;
@@ -114,7 +119,21 @@ public class RecordFrame extends JFrame implements ActionListener{
 		recordTypes.add(groupRecordButton);
 		recordTypes.add(partyRecordButton);
 		
-		
+		companionList.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// TODO Auto-generated method stub
+				if(!e.getValueIsAdjusting() && companionList.getSelectedValue() != null) { // 동시다발적으로 발생하는 이벤트 중 마지막 이벤트만을 처리함.
+					int removeflag = JOptionPane.showConfirmDialog(null, "아이디"+companionList.getSelectedValue(), "아이디 제거", JOptionPane.YES_NO_OPTION);
+					// yes = 0, no = 1
+					if(removeflag == 0) {
+						l_model.remove(companionList.getSelectedIndex());
+					}
+					companionList.clearSelection(); // 선택을 해제시킨다.
+				}
+			}
+			
+		});
 		//companionList.setBounds(222, 222, 113, 150);
 		scp = new JScrollPane(companionList);
 		scp.setBounds(222,222,113,150);
@@ -166,18 +185,36 @@ public class RecordFrame extends JFrame implements ActionListener{
 				}
 				int record_type = getRadioButtonNumber();
 				Object[] record_result = null;
-				String[] ids;
 				String[] record_arg = {distanceTextField.getText(), courseTextField.getText() };
 				switch(record_type) {
 				case 1:
-					ids = new String[] { "내 아이디" };
-					record_result = recordController.recordSingle(ids, record_arg); break;
+					record_result = recordController.recordSingle(myID, record_arg); break;
 				case 2:
-					String id_list = 
-					record_result = recordController.recordGroup(null, null); break;
+					String[] id_list = getGroupIDs(myID);
+					System.out.println(id_list.length);
+					record_result = recordController.recordGroup(id_list, record_arg); break;
 				case 3:
-					record_result = recordController.recordParty(null, null); break;
+					record_result = recordController.recordParty(myID, record_arg); break;
 				}
+				
+				// record_result에 따라 다른 처리
+				// record_result[0] => 기록 종류, record_result[1] => 성공 실패 여부, record_result[2] => 없는 아이디
+				if(!(Boolean)record_result[1]) {
+					if((Integer)record_result[0] == 1) {
+						JOptionPane.showMessageDialog(null, "기록 실패", "시스템 오류", JOptionPane.WARNING_MESSAGE);
+					}
+					
+					else if((Integer)record_result[0] == 2) {
+						 new GroupRecodingErrorMessage((Vector<String>)record_result[2]);
+					}
+					
+					else if((Integer)record_result[0] == 3) {
+						
+					}
+					return;
+				}
+				
+				System.out.println("기록완료");
 			}
 		});
 		
@@ -191,6 +228,8 @@ public class RecordFrame extends JFrame implements ActionListener{
 				turnOff();
 			}
 		});
+		
+		setVisible(true);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -238,7 +277,15 @@ public class RecordFrame extends JFrame implements ActionListener{
 		return true;
 	}
 	
-	private String[] getGroupIDs() {
-		l_model.last
+	private String[] getGroupIDs(String userID) {
+		// list model의 데이터 수는 getSize();
+		int num_of_ids = l_model.getSize();
+		String[] ids = new String[num_of_ids + 1];
+		ids[0] = userID;
+		for(int i = 0; i < num_of_ids; i++) {
+			ids[i+1] = l_model.get(i);
+		}
+		
+		return ids;
 	}
 }
