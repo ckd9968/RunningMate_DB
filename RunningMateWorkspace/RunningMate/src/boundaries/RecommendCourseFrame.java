@@ -34,6 +34,7 @@ public class RecommendCourseFrame extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * callable procedure. prepared, statement
 	 */
 	public RecommendCourseFrame() {
 		setAlwaysOnTop(true);

@@ -80,7 +80,7 @@ public class MainFrame extends JFrame {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			// 기록 버튼 클릭시 창 전환
 			public void actionPerformed(ActionEvent e) {
-				new RecordFrame();
+				new RecordFrame(null); // 생성자로 컨트롤러 전달
 				setVisible(true);
 			}
 		});

@@ -18,6 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import controllers.RecordingController;
+
 public class RecordFrame extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
@@ -36,6 +38,8 @@ public class RecordFrame extends JFrame implements ActionListener{
 	
 	private JButton addCompanionButton;
 	
+	private RecordingController recordController = null;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -43,7 +47,7 @@ public class RecordFrame extends JFrame implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RecordFrame frame = new RecordFrame();
+					RecordFrame frame = new RecordFrame(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,10 +59,13 @@ public class RecordFrame extends JFrame implements ActionListener{
 	/**
 	 * Create the frame.
 	 */
-	public RecordFrame() {
+	public RecordFrame(RecordingController c) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 387, 500);
 		setTitle("기록하기");
+		
+		this.recordController = c;
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -145,10 +152,35 @@ public class RecordFrame extends JFrame implements ActionListener{
 		lblNewLabel_3.setBounds(252, 45, 50, 15);
 		contentPane.add(lblNewLabel_3);
 		
+		
+		// 기록 동작 제어
 		JButton recordButton = new JButton("기록");
 		recordButton.setFont(new Font("굴림", Font.BOLD, 18));
 		recordButton.setBounds(25, 417, 139, 36);
 		contentPane.add(recordButton);
+		recordButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//라디오버튼에 따라 다른 메소드 호출
+				if(!checkFormData()) {
+					return;
+				}
+				int record_type = getRadioButtonNumber();
+				Object[] record_result = null;
+				String[] ids;
+				String[] record_arg = {distanceTextField.getText(), courseTextField.getText() };
+				switch(record_type) {
+				case 1:
+					ids = new String[] { "내 아이디" };
+					record_result = recordController.recordSingle(ids, record_arg); break;
+				case 2:
+					String id_list = 
+					record_result = recordController.recordGroup(null, null); break;
+				case 3:
+					record_result = recordController.recordParty(null, null); break;
+				}
+			}
+		});
+		
 		
 		JButton cancleButton = new JButton("취소");
 		cancleButton.setFont(new Font("굴림", Font.BOLD, 18));
@@ -174,7 +206,39 @@ public class RecordFrame extends JFrame implements ActionListener{
 		}
 	}
 	
-	public void turnOff() {
+	private void turnOff() {
 		this.dispose();
+	}
+	
+	private int getRadioButtonNumber() {
+		int num = 1;
+		if(groupRecordButton.isSelected()) num += 1;
+		
+		if(partyRecordButton.isSelected()) num += 2;
+		
+		return num;
+	}
+	
+	private boolean checkFormData() {
+		// 달린거리와 장소를 입력했는가?
+		// 달린거리는 형 변환이 가능한가?
+		if(distanceTextField.getText().length() * courseTextField.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "입력값이 없습니다.", "입력오류", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		
+		char[] dist = distanceTextField.getText().toCharArray();
+		for(char c : dist) {
+			if((c < '0' || c > '9') && (c != '.')) {
+				JOptionPane.showMessageDialog(null, "거리입력이 잘못 됐습니다.\nusage: ppp.ss", "입력오류", JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	private String[] getGroupIDs() {
+		l_model.last
 	}
 }
