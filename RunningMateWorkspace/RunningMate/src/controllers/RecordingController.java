@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class RecordingController {
@@ -94,7 +96,35 @@ public class RecordingController {
 	// 파티는 등록 기능 이후에 함
 	// userID로 파티ID를 요청 -> 파티 ID를 가진 모든 회원으로 기록 등록. -> 그룹 레코드 호출하기
 	public Object[] recordParty(String userID, String[] arguments) {
-		
+		DB_Connector.connectToDB("파티 등록");
+		this.con = DB_Connector.getConnection();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select 참여파티 from 회원 where 회원ID='"+userID+"' and 참여파티 is not null");
+			String partyID = null;
+			if(rs.next()) {
+				partyID = rs.getString(1);
+				rs.close();
+			} else {
+				return new Object[] {3, false};
+			}
+			rs = stmt.executeQuery("select 회원ID from 회원 where 참여파티='"+partyID+"'");
+			List<String> vids = new ArrayList<String>();
+			while(rs.next()) {
+				vids.add(rs.getString(1));
+			}
+			
+			String[] partyIDs = new String[vids.size()+1];
+			partyIDs[0] = userID;
+			
+			for(int i = 0; i < vids.size(); i++) {
+				partyIDs[i+1] = vids.get(i);
+			}
+			
+			this.recordGroup(partyIDs, arguments);
+		} catch(SQLException e) {
+			
+		}
 		
 		return null;
 	}

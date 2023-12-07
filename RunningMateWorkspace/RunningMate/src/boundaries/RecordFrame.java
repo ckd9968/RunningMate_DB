@@ -209,7 +209,7 @@ public class RecordFrame extends JFrame implements ActionListener{
 					}
 					
 					else if((Integer)record_result[0] == 3) {
-						
+						JOptionPane.showMessageDialog(null, "참여중인 파티가 없습니다.", "오류", JOptionPane.ERROR_MESSAGE);
 					}
 					return;
 				}

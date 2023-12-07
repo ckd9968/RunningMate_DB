@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DB_Connector {
 	static Connection con;
-	static final String url = "jdbc:oracle:thin:@localhost:1521:XE";
+	static final String url = "jdbc:oracle:thin:@localhost:32769:orcl";
 	static final String id = "rm";
 	static final String pass = "rm123";
 	

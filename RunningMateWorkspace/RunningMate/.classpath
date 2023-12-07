@@ -6,6 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="D:/2023년 3학년 2학기/데이터베이스 프로그래밍/RunningMate_DB/RunningMate_DB/RunningMateWorkspace/JDBC드라이버/ojdbc8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gockd/OneDrive/바탕 화면/ojdbc8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
