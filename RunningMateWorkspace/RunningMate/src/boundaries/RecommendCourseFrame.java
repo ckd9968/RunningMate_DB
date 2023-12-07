@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -195,6 +196,8 @@ public class RecommendCourseFrame extends JFrame {
                             ex.printStackTrace();
                         }
                     }
+                }else {
+                	JOptionPane.showMessageDialog(null, "검색 결과가 없습니다");
                 }
             }
         });
