@@ -8,15 +8,24 @@ CREATE SEQUENCE seq_장비ID
     MAXVALUE 99999
     NOCYCLE;
     
-ALTER SEQUENCE seq_장비ID INCREMENT BY -99998;
-ALTER SEQUENCE seq_장비ID INCREMENT BY 1;
+--기존의 장비의 장비ID를 수정하는 프로시저 (BEFORE UPDATE)
+DECLARE
+   counter NUMBER := 1;
+BEGIN
+   LOOP
+    UPDATE 장비 
+    SET 장비ID = 'EQ' || LPAD(seq_장비ID.NEXTVAL, 5, '0');
+    EXIT WHEN counter >= 데이터갯수;
+    counter := counter + 1;
+   END LOOP;
+END;
 
 -- 장비 ID가 없는 뷰 생성
 CREATE OR REPLACE VIEW V_장비ID없음 AS
 SELECT 회원ID, 장비종류, 브랜드, 제품명, 가격
 FROM 장비;
 
--- 장비 ID 부여하는 트리거 생성 (INSTEAD OF INSERT)
+-- 새로운 장비의 장비 ID 부여하는 트리거 생성 (INSTEAD OF INSERT)
 CREATE OR REPLACE TRIGGER T_장비ID없음_삽입
 INSTEAD OF INSERT ON V_장비ID없음
 FOR EACH ROW
