@@ -14,11 +14,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import controllers.partyRegisterController;
+import controllers.PartyRegisterController;
 import entities.Party;
 
 public class PartyRegisterFrame extends JFrame {
-	private String userName = "MEM00002";
+	private String userName = null;
 	private JPanel contentPane;
 	private JTextField partyNameField;
 	private JTextField meetingPlaceField;
@@ -27,7 +27,7 @@ public class PartyRegisterFrame extends JFrame {
 	private JTextField dateField;
 	private JTextField hourField;
 	private JTextField minuteField;
-	private partyRegisterController con = null;
+	private PartyRegisterController con = null;
 	/**
 	 * Launch the application.
 	 */
@@ -35,7 +35,7 @@ public class PartyRegisterFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PartyRegisterFrame frame = new PartyRegisterFrame(null);
+					PartyRegisterFrame frame = new PartyRegisterFrame(null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,13 +47,15 @@ public class PartyRegisterFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PartyRegisterFrame(partyRegisterController c) {
+	public PartyRegisterFrame(PartyRegisterController c, String userID) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		this.con = c;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		
+		this.userName = userID;
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		

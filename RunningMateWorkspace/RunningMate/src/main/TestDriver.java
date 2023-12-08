@@ -1,15 +1,13 @@
 package main;
 
 import boundaries.PartyRegisterFrame;
-import boundaries.RecordFrame;
-import controllers.RecordingController;
-import controllers.partyRegisterController;
+import controllers.PartyRegisterController;
 
 
 public class TestDriver {
 
 	public static void main(String[] args) {
-		new PartyRegisterFrame(new partyRegisterController());
+		new PartyRegisterFrame(new PartyRegisterController(),"MEM00001");
 	}
 
 }

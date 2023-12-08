@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 import entities.Party;
 
-public class partyRegisterController {
+public class PartyRegisterController {
 	private Connection con;
 	public boolean checkDouble(String userName) {
 		try {
