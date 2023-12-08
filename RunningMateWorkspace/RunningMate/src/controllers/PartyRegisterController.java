@@ -38,11 +38,11 @@ public class PartyRegisterController {
 			}
 			
 			newparty.setPartyID(getLatestPartyID());
-			System.out.println(newparty.getPartyID());
-			System.out.println(newparty.getLeader());
-			System.out.println(newparty.getMeetingPlace());
-			System.out.println(newparty.getPartyName());
-			System.out.println(newparty.getMeetingDate());
+//			System.out.println(newparty.getPartyID());
+//			System.out.println(newparty.getLeader());
+//			System.out.println(newparty.getMeetingPlace());
+//			System.out.println(newparty.getPartyName());
+//			System.out.println(newparty.getMeetingDate());
 			con.setAutoCommit(false);
 			
 			Statement stmt = con.createStatement();
@@ -79,6 +79,33 @@ public class PartyRegisterController {
 		}
 		
 		return false;
+	}
+	
+	public boolean removeParty(String userID) {
+		DB_Connector.connectToDB("파티탈퇴");
+		con = DB_Connector.getConnection();
+		
+		try {
+			PreparedStatement pstmt = con.prepareStatement("select 파티ID from 파티 where 파티장 = ?");
+			pstmt.setString(1, userID);
+			ResultSet rs = pstmt.executeQuery();
+			if(!rs.next()) {
+				JOptionPane.showMessageDialog(null, "등록한 파티가 없습니다.", "기능 오류", JOptionPane.ERROR_MESSAGE);
+			} else {
+				String paryID = rs.getString(1);
+				Statement stmt = con.createStatement();
+				int r = stmt.executeUpdate("delete from 파티 where 파티ID='"+paryID+"'");
+				if(r > 0) {
+					return true;
+				}
+			}
+			return false;
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			DB_Connector.closeConnection();
+		}
 	}
 	
 	private String getLatestPartyID() {

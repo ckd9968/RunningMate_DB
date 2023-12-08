@@ -25,7 +25,7 @@ import javax.swing.event.ListSelectionListener;
 import controllers.RecordingController;
 
 public class RecordFrame extends JFrame implements ActionListener{
-	private String myID = "MEM00001";
+	private String userID;
 	
 	private JPanel contentPane;
 	private JTextField distanceTextField;
@@ -52,7 +52,7 @@ public class RecordFrame extends JFrame implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RecordFrame frame = new RecordFrame(null);
+					RecordFrame frame = new RecordFrame(null, "");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -64,12 +64,13 @@ public class RecordFrame extends JFrame implements ActionListener{
 	/**
 	 * Create the frame.
 	 */
-	public RecordFrame(RecordingController c) {
+	public RecordFrame(RecordingController c, String userID) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 387, 500);
 		setTitle("기록하기");
 		
 		this.recordController = c;
+		this.userID = userID;
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -188,13 +189,13 @@ public class RecordFrame extends JFrame implements ActionListener{
 				String[] record_arg = {distanceTextField.getText(), courseTextField.getText() };
 				switch(record_type) {
 				case 1:
-					record_result = recordController.recordSingle(myID, record_arg); break;
+					record_result = recordController.recordSingle(userID, record_arg); break;
 				case 2:
-					String[] id_list = getGroupIDs(myID);
+					String[] id_list = getGroupIDs(userID);
 					System.out.println(id_list.length);
 					record_result = recordController.recordGroup(id_list, record_arg); break;
 				case 3:
-					record_result = recordController.recordParty(myID, record_arg); break;
+					record_result = recordController.recordParty(userID, record_arg); break;
 				}
 				
 				// record_result에 따라 다른 처리

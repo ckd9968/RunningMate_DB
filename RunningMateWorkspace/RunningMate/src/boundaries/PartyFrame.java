@@ -45,7 +45,7 @@ public class PartyFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PartyFrame frame = new PartyFrame(new PartyContoller(), "MEM00002");
+					PartyFrame frame = new PartyFrame(new PartyContoller(), "MEM00004");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

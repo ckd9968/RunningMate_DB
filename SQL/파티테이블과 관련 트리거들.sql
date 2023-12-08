@@ -86,6 +86,12 @@ select * from 파티;
 insert into 파티참여 values('PT00001', 'MEM00002');
 select * from 파티참여;
 select * from 회원;
-delete from 파티;
+select * from 기록;
 commit;
 rollback;
+
+delete from 기록;
+
+select * from 회원;
+update 회원 set 달린거리=0;
+select * from 크루;

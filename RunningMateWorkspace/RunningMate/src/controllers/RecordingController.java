@@ -55,7 +55,7 @@ public class RecordingController {
 			pstmt.setDouble(3, Double.parseDouble(arguments[0]));
 			pstmt.setDate(4, record_time);
 			pstmt.setString(5, arguments[1]);
-			
+			System.out.println(ids.length);
 			for(int i = 0; i < ids.length; i++) {
 				String recordSerialNumber = getRecordNumberOfID(ids[i]);
 				System.out.println("그룹기록하기 시리얼 넘버 출력 : "+recordSerialNumber);
@@ -111,17 +111,16 @@ public class RecordingController {
 			rs = stmt.executeQuery("select 회원ID from 회원 where 참여파티='"+partyID+"'");
 			List<String> vids = new ArrayList<String>();
 			while(rs.next()) {
+				System.out.println("파티원 : " + rs.getString(1));
 				vids.add(rs.getString(1));
 			}
 			
-			String[] partyIDs = new String[vids.size()+1];
-			partyIDs[0] = userID;
-			
+			String[] partyIDs = new String[vids.size()];
 			for(int i = 0; i < vids.size(); i++) {
-				partyIDs[i+1] = vids.get(i);
+				partyIDs[i] = vids.get(i);
 			}
 			
-			this.recordGroup(partyIDs, arguments);
+			return this.recordGroup(partyIDs, arguments);
 		} catch(SQLException e) {
 			
 		}

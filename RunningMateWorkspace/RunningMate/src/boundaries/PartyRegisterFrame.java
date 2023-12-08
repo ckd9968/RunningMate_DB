@@ -137,7 +137,7 @@ public class PartyRegisterFrame extends JFrame {
 		contentPane.add(lblNewLabel_7);
 		
 		JButton partyRegisterButton = new JButton("파티등록");
-		partyRegisterButton.setBounds(48, 212, 128, 41);
+		partyRegisterButton.setBounds(21, 212, 128, 41);
 		contentPane.add(partyRegisterButton);
 		partyRegisterButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -146,7 +146,7 @@ public class PartyRegisterFrame extends JFrame {
 				}
 				String partyName = partyNameField.getText();
 				String meetingPlace = meetingPlaceField.getText();
-				Party newparty = new Party(null, partyName, meetingPlace,userName, yearField.getText(), monthField.getText(), dateField.getText(), hourField.getText(), minuteField.getText());
+				Party newparty = new Party(null, partyName, meetingPlace, userName, yearField.getText(), monthField.getText(), dateField.getText(), hourField.getText(), minuteField.getText());
 				if(con.registerParty(newparty)) {
 					JOptionPane.showMessageDialog(null, "성공적으로 파티를 등록했습니다.", "완료", JOptionPane.INFORMATION_MESSAGE);
 				} else {
@@ -156,8 +156,23 @@ public class PartyRegisterFrame extends JFrame {
 		});
 		
 		JButton cancleButton = new JButton("취소");
-		cancleButton.setBounds(253, 212, 128, 41);
+		cancleButton.setBounds(296, 212, 128, 41);
 		contentPane.add(cancleButton);
+		
+		JButton partyRemovalButton = new JButton("파티 삭제");
+		partyRemovalButton.setBounds(161, 212, 123, 41);
+		contentPane.add(partyRemovalButton);
+		partyRemovalButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(con.removeParty(userID)) {
+					JOptionPane.showMessageDialog(null, "파티가 삭제되었습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "파티 삭제에 실패했습니다.", "기능 오류", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+		
 		cancleButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				turnOff();
@@ -193,5 +208,4 @@ public class PartyRegisterFrame extends JFrame {
 		
 		return false;
 	}
-	
 }
