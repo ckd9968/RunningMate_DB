@@ -1,47 +1,47 @@
---ì‹œí€€ìŠ¤ ê¶Œí•œì„ ë¶€ì—¬ (RMì€ ì‚¬ìš©ìžëª…)
-GRANT SELECT ON seq_ìž¥ë¹„ID TO RM;
+--½ÃÄö½º ±ÇÇÑÀ» ºÎ¿© (RMÀº »ç¿ëÀÚ¸í)
+GRANT SELECT ON seq_ÀåºñID TO RM;
 
---ìž¥ë¹„ëŠ” 99999ê°œê¹Œì§€ ìƒì„± ê°€ëŠ¥
-CREATE SEQUENCE seq_ìž¥ë¹„ID    
+--Àåºñ´Â 99999°³±îÁö »ý¼º °¡´É
+CREATE SEQUENCE seq_ÀåºñID    
     START WITH 1
     INCREMENT BY 1
     MAXVALUE 99999
     NOCYCLE;
     
---ê¸°ì¡´ì˜ ìž¥ë¹„ì˜ ìž¥ë¹„IDë¥¼ ìˆ˜ì •í•˜ëŠ” í”„ë¡œì‹œì € (BEFORE UPDATE)
+--±âÁ¸ÀÇ ÀåºñÀÇ ÀåºñID¸¦ ¼öÁ¤ÇÏ´Â ÇÁ·Î½ÃÀú (BEFORE UPDATE)
 DECLARE
    counter NUMBER := 1;
 BEGIN
    LOOP
-    UPDATE ìž¥ë¹„ 
-    SET ìž¥ë¹„ID = 'EQ' || LPAD(seq_ìž¥ë¹„ID.NEXTVAL, 5, '0');
-    EXIT WHEN counter >= ë°ì´í„°ê°¯ìˆ˜;
+    UPDATE Àåºñ 
+    SET ÀåºñID = 'EQ' || LPAD(seq_ÀåºñID.NEXTVAL, 5, '0');
+    EXIT WHEN counter >= µ¥ÀÌÅÍ°¹¼ö;
     counter := counter + 1;
    END LOOP;
 END;
 
--- ìž¥ë¹„ IDê°€ ì—†ëŠ” ë·° ìƒì„±
-CREATE OR REPLACE VIEW V_ìž¥ë¹„IDì—†ìŒ AS
-SELECT íšŒì›ID, ìž¥ë¹„ì¢…ë¥˜, ë¸Œëžœë“œ, ì œí’ˆëª…, ê°€ê²©
-FROM ìž¥ë¹„;
+-- Àåºñ ID°¡ ¾ø´Â ºä »ý¼º
+CREATE OR REPLACE VIEW V_ÀåºñID¾øÀ½ AS
+SELECT È¸¿øID, ÀåºñÁ¾·ù, ºê·£µå, Á¦Ç°¸í, °¡°Ý
+FROM Àåºñ;
 
--- ìƒˆë¡œìš´ ìž¥ë¹„ì˜ ìž¥ë¹„ ID ë¶€ì—¬í•˜ëŠ” íŠ¸ë¦¬ê±° ìƒì„± (INSTEAD OF INSERT)
-CREATE OR REPLACE TRIGGER T_ìž¥ë¹„IDì—†ìŒ_ì‚½ìž…
-INSTEAD OF INSERT ON V_ìž¥ë¹„IDì—†ìŒ
+-- »õ·Î¿î ÀåºñÀÇ Àåºñ ID ºÎ¿©ÇÏ´Â Æ®¸®°Å »ý¼º (INSTEAD OF INSERT)
+CREATE OR REPLACE TRIGGER T_ÀåºñID¾øÀ½_»ðÀÔ
+INSTEAD OF INSERT ON V_ÀåºñID¾øÀ½
 FOR EACH ROW
 DECLARE
-    v_ìž¥ë¹„ID VARCHAR(20);
+    v_ÀåºñID VARCHAR(20);
 BEGIN
-    SELECT 'EQ' || LPAD(seq_ìž¥ë¹„ID.NEXTVAL, 5, '0') INTO v_ìž¥ë¹„ID FROM DUAL;
-    INSERT INTO ìž¥ë¹„ (ìž¥ë¹„ID, íšŒì›ID, ìž¥ë¹„ì¢…ë¥˜, ë¸Œëžœë“œ, ì œí’ˆëª…, ê°€ê²©) VALUES (v_ìž¥ë¹„ID, :NEW.íšŒì›ID, :NEW.ìž¥ë¹„ì¢…ë¥˜,:NEW.ë¸Œëžœë“œ,:NEW.ì œí’ˆëª…,:NEW.ê°€ê²©);
+    SELECT 'EQ' || LPAD(seq_ÀåºñID.NEXTVAL, 5, '0') INTO v_ÀåºñID FROM DUAL;
+    INSERT INTO Àåºñ (ÀåºñID, È¸¿øID, ÀåºñÁ¾·ù, ºê·£µå, Á¦Ç°¸í, °¡°Ý) VALUES (v_ÀåºñID, :NEW.È¸¿øID, :NEW.ÀåºñÁ¾·ù,:NEW.ºê·£µå,:NEW.Á¦Ç°¸í,:NEW.°¡°Ý);
 END;
 
---ë°ì´í„° ì‚½ìž… í™•ì¸ ì½”ë“œ
-INSERT INTO V_ìž¥ë¹„IDì—†ìŒ(íšŒì›ID, ìž¥ë¹„ì¢…ë¥˜, ë¸Œëžœë“œ, ì œí’ˆëª…, ê°€ê²©) VALUES ('MEM00051', 'ìš´ë™í™”', 'ë‚˜ì´í‚¤','ì‹œë£¨ë–¡','100000');
+--µ¥ÀÌÅÍ »ðÀÔ È®ÀÎ ÄÚµå
+INSERT INTO V_ÀåºñID¾øÀ½(È¸¿øID, ÀåºñÁ¾·ù, ºê·£µå, Á¦Ç°¸í, °¡°Ý) VALUES ('MEM00051', '¿îµ¿È­', '³ªÀÌÅ°','½Ã·ç¶±','100000');
 
 
 
---íŠ¸ë¦¬ê±° ì˜¤ë¥˜ ì‹œ, ì»´íŒŒì¼ í•´ë³¼ ê²ƒ
-ALTER TRIGGER RM.T_ìž¥ë¹„IDì—†ìŒ_ì‚½ìž… COMPILE;
---ENABLEì¼ ë•Œ, ì •ìƒìž‘ìš©
-SELECT status FROM all_triggers WHERE trigger_name = 'T_ìž¥ë¹„IDì—†ìŒ_ì‚½ìž…' AND owner = 'RM';
+--Æ®¸®°Å ¿À·ù ½Ã, ÄÄÆÄÀÏ ÇØº¼ °Í
+ALTER TRIGGER RM.T_ÀåºñID¾øÀ½_»ðÀÔ COMPILE;
+--ENABLEÀÏ ¶§, Á¤»óÀÛ¿ë
+SELECT status FROM all_triggers WHERE trigger_name = 'T_ÀåºñID¾øÀ½_»ðÀÔ' AND owner = 'RM';
