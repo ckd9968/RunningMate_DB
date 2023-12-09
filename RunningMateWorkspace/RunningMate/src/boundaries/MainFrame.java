@@ -14,6 +14,7 @@ import controllers.EquipmentsCombinationController;
 import controllers.PartyContoller;
 import controllers.PartyRegisterController;
 import controllers.RecordingController;
+import controllers.RegisterEquipmentController;
 
 public class MainFrame extends JFrame {
 
@@ -88,9 +89,9 @@ public class MainFrame extends JFrame {
 		JButton openEquipmentRegisterButton = new JButton("장비 등록");
 		openEquipmentRegisterButton.setFont(new Font("굴림", Font.BOLD, 18));
 		openEquipmentRegisterButton.addActionListener(new ActionListener() {
-			// 장비 검색 버튼 클릭시 창 전환
+			// 장비 등록 버튼 클릭시 창 전환
 			public void actionPerformed(ActionEvent e) {
-				new EquipmentsCombinationFrame(null);
+				new RegisterEquipmentFrame(new RegisterEquipmentController(), userID);
 			}
 		});
 		openEquipmentRegisterButton.setBounds(12, 378, 418, 78);
