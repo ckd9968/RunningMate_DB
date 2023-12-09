@@ -68,7 +68,7 @@ public class EquipmentsCombinationFrame extends JFrame {
 	 */
 	public EquipmentsCombinationFrame(EquipmentsCombinationController c) {
 		this.controller = c;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setBounds(100, 100, 826, 360);
 		setTitle("예산 맞춤 장비 조합");

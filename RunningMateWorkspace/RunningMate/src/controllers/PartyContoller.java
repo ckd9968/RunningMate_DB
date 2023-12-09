@@ -57,6 +57,13 @@ public class PartyContoller {
 		DB_Connector.connectToDB("파티가입");
 		this.con = DB_Connector.getConnection();
 		try {
+			ResultSet rs = con.createStatement().executeQuery("select * from 파티참여 where 회원ID='"+userID+"'");
+			if(rs.next()) {
+				JOptionPane.showMessageDialog(null, "이미 가입한 파티가 있습니다.", "파티 중복", JOptionPane.ERROR_MESSAGE);
+				rs.close();
+				return false;
+			}
+			rs.close();
 			PreparedStatement pstmt = con.prepareStatement(this.SQL_participation);
 			pstmt.setString(1, partyID);
 			pstmt.setString(2, userID);

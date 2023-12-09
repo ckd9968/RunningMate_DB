@@ -65,7 +65,7 @@ public class RecordFrame extends JFrame implements ActionListener{
 	 * Create the frame.
 	 */
 	public RecordFrame(RecordingController c, String userID) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 387, 500);
 		setTitle("기록하기");
 		

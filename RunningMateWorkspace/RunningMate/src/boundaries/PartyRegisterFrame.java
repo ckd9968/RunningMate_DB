@@ -48,7 +48,7 @@ public class PartyRegisterFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public PartyRegisterFrame(PartyRegisterController c, String userID) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		this.con = c;
 		contentPane = new JPanel();

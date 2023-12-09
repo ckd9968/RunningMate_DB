@@ -43,7 +43,7 @@ public class GroupRecodingErrorMessage extends JFrame {
 	 */
 	public GroupRecodingErrorMessage(Vector<String> ids) {
 		setTitle("그룹 등록 실패");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 252, 356);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
