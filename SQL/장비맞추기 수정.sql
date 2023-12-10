@@ -48,7 +48,7 @@ begin
     rights := NESTED_LOOP_IDX();
     middles := NESTED_LOOP_IDX();
 
-    -- 모든 커서가 마지막에 다다를 때 까지 반복
+    -- 종류별로 각각 우선순위 테이블에 저장하는 반복구간. 모든 커서가 마지막에 다다를 때 까지 반복
     LOOP
     FETCH shoes into vt_운동화튜플.장비ID, vt_운동화튜플.회원ID, vt_운동화튜플.장비종류, vt_운동화튜플.브랜드, vt_운동화튜플.제품명, vt_운동화튜플.가격;
     FETCH gloves into vt_장갑튜플.장비ID, vt_장갑튜플.회원ID, vt_장갑튜플.장비종류, vt_장갑튜플.브랜드, vt_장갑튜플.제품명, vt_장갑튜플.가격;
@@ -114,18 +114,22 @@ begin
     lefts.extend(2);
     rights.extend(2);
     middles.extend(2);
-    -- 
+    
+    
+    -- 1번 우선순위 장비를 가장 비싼 것부터 적용시킨다.
     for i_idx in pr_1_eq.first..pr_1_eq.last loop
         v_pr_1_idx := pr_1_eq.last + 1 - i_idx;
         if pr_1_eq(i_idx).가격 < budget then
+            -- 우선순위 1번 장비 가격이 예산보다 작다면 다른 장비를 나머지에 맞춘다.
             dbms_output.put_line('check1 : v_pr_1_idx = ' || v_pr_1_idx || ' pirce = ' || pr_1_eq(v_pr_1_idx).가격);
             lefts(1) := 1;
             rights(1) := pr_2_eq.last;
-
+            -- 이진 탐색을 2번 우선순위 장비 테이블에 수행한다.
             while lefts(1) < rights(1) loop
                 dbms_output.put_line('check2 : lefts(1) = ' || lefts(1) || ' rights(1) = ' || rights(1));
 
                 middles(1) := trunc((lefts(1) + rights(1)) / 2);
+                -- 가격합이 가장 예산에 근접한 장비를 찾는다.
                 if pr_2_eq(middles(1)).가격 + pr_1_eq(v_pr_1_idx).가격 > budget then
                     rights(1) := middles(1) - 1;
                 elsif pr_2_eq(middles(1)).가격 + pr_1_eq(v_pr_1_idx).가격 < budget then
@@ -136,25 +140,30 @@ begin
             end loop;
 
             dbms_output.put_line('left(1) = ' || lefts(1));
+            -- 위 탐색의 결과 가격합이 예산보다 크고 가장 작은 조합이 되므로 예산 내로 들어올 때까지 2번 우선순위 장비 가격을 낮춘다.
             while( lefts(1) > 0 and pr_1_eq(v_pr_1_idx).가격 + pr_2_eq(lefts(1)).가격 >= budget) loop
                 lefts(1) := lefts(1) - 1;
             end loop;
-
+            
+            -- 단순 디버그를 위한 출력 내용
             if lefts(1) >= 1 and lefts(1) <= pr_2_eq.last then
                 dbms_output.put_line('price = ' || pr_2_eq(lefts(1)).가격);
             end if;
 
+            -- 만약 인덱스가 범위 밖으로 나간다면 2번 우선순위 장비 선택이 불가능하므로 1번 우선순위 장비 가격을 낮추고 다시 수행한다.
             if lefts(1) < 1 then
                 lefts(1) := -1;
                 continue;
             end if;
 
-
+            -- 3번 우선순위 장비 가격을 예산의 나머지에 맞추기 위해 이진탐색을 수행한다.
+            -- 2번 우선순위 장비 가격을 한 튜플 씩 낮춰가면서 처음 3번 우선순위 장비 가격이 예산에 들어맞는 순간을 찾는다.
+            -- 이 탐색 구간의 수행 횟수를 줄이기 위해 위에서 이진 탐색을 수행하였다.
             while lefts(1) > 0 loop
                 v_partial_price := pr_1_eq(v_pr_1_idx).가격 + pr_2_eq(lefts(1)).가격;
                 lefts(2) := 1;
                 rights(2) := pr_3_eq.last;
-
+                -- 우선순위 3번 종류의 이진탐색을 수행
                 while lefts(2) < rights(2) loop
                     dbms_output.put_line('check3 : lefts(2) = ' || lefts(2) || ' rights(2) = ' || rights(2));
 
@@ -167,15 +176,17 @@ begin
                         exit;
                     end if;
                 end loop;
-
+                -- 예산에 맞을 때 까지 우선순위 3번 가격을 낮춘다.
                 while lefts(2) > 0 and pr_3_eq(lefts(2)).가격 + v_partial_price > budget loop
                     lefts(2) := lefts(2) - 1;
                 end loop;
-
+                
+                -- 단순 디버그를 위한 출력
                 if lefts(2) <= pr_3_eq.last and lefts(2) >= 1 then
                     dbms_output.put_line('lefts(2) = ' || lefts(2) || ', price = ' || pr_3_eq(lefts(2)).가격);
                 end if;
 
+                -- 인덱스를 낮춘 결과 예산에 들어 맞는다면 아직 인덱스가 1보다 작아지지 않았다. 따라서 조합이 완성됐으므로 분기한다.
                 if lefts(2) > 0 then
                     goto OUT_OF_COMB;
                 end if;
@@ -184,7 +195,7 @@ begin
             end loop;  
         end if;
     end loop;
-
+    -- 우선순위 1번 장비 모두에 대하여 수행해도 조합이 없다면 예외를 발생시킨다.
     raise NO_MATCH_COMB_EXCEPTION;
 
     <<OUT_OF_COMB>> -- 다 맞으면 이곳으로 jUMP

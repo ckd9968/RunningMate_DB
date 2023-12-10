@@ -26,13 +26,7 @@ public class EquipmentsCombinationController {
 		} catch(SQLException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-		} 
-		/*
-		 * 여기서 connection을 끊어선 안된다.
-		 * ResultSetMetaData는 connection을 통해 정보를 읽어온다.
-		finally {
-			DB_Connector.closeConnection();
-		}*/
+		}
 		return res;
 	}
 }
