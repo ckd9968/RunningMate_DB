@@ -58,6 +58,7 @@ public class PartyRegisterFrame extends JFrame {
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+			
 		
 		JLabel lblNewLabel = new JLabel("파티명 :");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
